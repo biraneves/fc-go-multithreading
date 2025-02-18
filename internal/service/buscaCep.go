@@ -16,50 +16,28 @@ func BuscaCep(servico int, cep string) (*model.ViaCepApi, *model.CepBrasilApi, e
 		return nil, nil, err
 	}
 
-	if servico == model.ViaCep {
-		res, err := http.Get(url)
-		if err != nil {
-			return nil, nil, err
-		}
-		defer res.Body.Close()
-
-		data, err := io.ReadAll(res.Body)
-		if err != nil {
-			return nil, nil, err
-		}
-
-		var viaCepData model.ViaCepApi
-		err = json.Unmarshal(data, &viaCepData)
-		if err != nil {
-			return nil, nil, err
-		}
-
-		return &viaCepData, nil, nil
+	data, err := BuscaDados(url)
+	if err != nil {
+		return nil, nil, err
 	}
 
-	if servico == model.CepBrasil {
-		res, err := http.Get(url)
-		if err != nil {
+	switch servico {
+	case model.ViaCep:
+		var viaCepData model.ViaCepApi
+		if err := json.Unmarshal(data, &viaCepData); err != nil {
 			return nil, nil, err
 		}
-		defer res.Body.Close()
+		return &viaCepData, nil, nil
 
-		data, err := io.ReadAll(res.Body)
-		if err != nil {
-			return nil, nil, err
-		}
-
+	case model.CepBrasil:
 		var brasilApiData model.CepBrasilApi
-		err = json.Unmarshal(data, &brasilApiData)
-		if err != nil {
+		if err := json.Unmarshal(data, &brasilApiData); err != nil {
 			return nil, nil, err
 		}
-
 		return nil, &brasilApiData, nil
 	}
 
 	return nil, nil, nil
-
 }
 
 func UrlServico(servico int, cep string) (string, error) {
