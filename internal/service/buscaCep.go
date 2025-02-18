@@ -1,14 +1,44 @@
 package service
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"strings"
 
 	"github.com/biraneves/fc-go-multithreading/internal/model"
 )
 
 func BuscaCep(servico int, cep string) (*model.ViaCepApi, *model.CepBrasilApi, error) {
+	url, err := UrlServico(servico, cep)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	if servico == model.ViaCep {
+		res, err := http.Get(url)
+		if err != nil {
+			return nil, nil, err
+		}
+		defer res.Body.Close()
+
+		data, err := io.ReadAll(res.Body)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		var viaCepData model.ViaCepApi
+		err = json.Unmarshal(data, &viaCepData)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		return &viaCepData, nil, nil
+	}
+
 	return nil, nil, nil
+
 }
 
 func UrlServico(servico int, cep string) (string, error) {
