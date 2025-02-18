@@ -9,17 +9,17 @@ import (
 )
 
 func TestUrlServico(t *testing.T) {
-	cep := "07190050"
+	cep := "01001000"
 
 	servico := model.CepBrasil
-	expectedUrlCepBrasil := "https://brasilapi.com.br/api/cep/v1/07190050"
+	expectedUrlCepBrasil := "https://brasilapi.com.br/api/cep/v1/01001000"
 	actualUrlCepBrasil, err := service.UrlServico(servico, cep)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, actualUrlCepBrasil)
 	assert.Equal(t, expectedUrlCepBrasil, actualUrlCepBrasil)
 
 	servico = model.ViaCep
-	expectedUrlViaCep := "http://viacep.com.br/ws/07190050/json/"
+	expectedUrlViaCep := "http://viacep.com.br/ws/01001000/json/"
 	actualUrlViaCep, err := service.UrlServico(servico, cep)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, actualUrlViaCep)
