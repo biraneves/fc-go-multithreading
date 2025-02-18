@@ -37,6 +37,27 @@ func BuscaCep(servico int, cep string) (*model.ViaCepApi, *model.CepBrasilApi, e
 		return &viaCepData, nil, nil
 	}
 
+	if servico == model.CepBrasil {
+		res, err := http.Get(url)
+		if err != nil {
+			return nil, nil, err
+		}
+		defer res.Body.Close()
+
+		data, err := io.ReadAll(res.Body)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		var brasilApiData model.CepBrasilApi
+		err = json.Unmarshal(data, &brasilApiData)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		return nil, &brasilApiData, nil
+	}
+
 	return nil, nil, nil
 
 }
