@@ -25,3 +25,30 @@ func TestUrlServico(t *testing.T) {
 	assert.NotEmpty(t, actualUrlViaCep)
 	assert.Equal(t, expectedUrlViaCep, actualUrlViaCep)
 }
+
+func TestBuscaCep(t *testing.T) {
+	cep := "01001000"
+
+	servico := model.ViaCep
+	expectedResViaCepApi := model.ViaCepApi{
+		Cep:         "01001-000",
+		Logradouro:  "Praça da Sé",
+		Complemento: "lado ímpar",
+		Unidade:     "",
+		Bairro:      "Sé",
+		Localidade:  "São Paulo",
+		Uf:          "SP",
+		Estado:      "São Paulo",
+		Regiao:      "Sudeste",
+		Ibge:        "3550308",
+		Gia:         "1004",
+		Ddd:         "11",
+		Siafi:       "7107",
+	}
+
+	actualResViaCepApi, actualResBrasilApi, actualError := service.BuscaCep(servico, cep)
+	assert.Nil(t, actualError)
+	assert.Nil(t, actualResBrasilApi)
+	assert.NotNil(t, actualResViaCepApi)
+	assert.Equal(t, expectedResViaCepApi, actualResViaCepApi)
+}
