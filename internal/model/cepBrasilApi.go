@@ -6,5 +6,5 @@ type CepBrasilApi struct {
 	City         string `json:"city,omitempty"`
 	Neighborhood string `json:"neighborhood,omitempty"`
 	Street       string `json:"street,omitempty"`
-	Service      string `json:"service,omitempty"`
+	// Service      string `json:"service,omitempty"`
 }
