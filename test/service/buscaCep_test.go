@@ -51,4 +51,19 @@ func TestBuscaCep(t *testing.T) {
 	assert.Nil(t, actualResBrasilApi)
 	assert.NotNil(t, actualResViaCepApi)
 	assert.Equal(t, expectedResViaCepApi, actualResViaCepApi)
+
+	servico = model.CepBrasil
+	expectedResCepBrasilApi := &model.CepBrasilApi{
+		Cep:          "01001000",
+		State:        "SP",
+		City:         "São Paulo",
+		Neighborhood: "Sé",
+		Street:       "Praça da Sé",
+	}
+
+	actualResViaCepApi, actualResBrasilApi, actualError = service.BuscaCep(servico, cep)
+	assert.Nil(t, actualError)
+	assert.Nil(t, actualResViaCepApi)
+	assert.NotNil(t, actualResBrasilApi)
+	assert.Equal(t, expectedResCepBrasilApi, actualResBrasilApi)
 }
