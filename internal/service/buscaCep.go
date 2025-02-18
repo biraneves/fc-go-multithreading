@@ -18,7 +18,7 @@ func UrlServico(servico int, cep string) (string, error) {
 	case model.CepBrasil:
 		url = "https://brasilapi.com.br/api/cep/v1/{cep}"
 	case model.ViaCep:
-		url = "https://viacep.com.br/ws/{cep}/json/"
+		url = "http://viacep.com.br/ws/{cep}/json/"
 	default:
 		url = ""
 	}
