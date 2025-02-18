@@ -11,7 +11,7 @@ func BuscaCep(servico int, cep string) (*model.ViaCepApi, *model.CepBrasilApi, e
 	return nil, nil, nil
 }
 
-func urlServico(servico int, cep string) (string, error) {
+func UrlServico(servico int, cep string) (string, error) {
 	var url string
 
 	switch servico {
