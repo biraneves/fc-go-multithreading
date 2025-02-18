@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/biraneves/fc-go-multithreading/internal/model"
@@ -66,4 +67,49 @@ func TestBuscaCep(t *testing.T) {
 	assert.Nil(t, actualResViaCepApi)
 	assert.NotNil(t, actualResBrasilApi)
 	assert.Equal(t, expectedResCepBrasilApi, actualResBrasilApi)
+}
+
+func TestBuscaDados(t *testing.T) {
+	urlViaCep := "http://viacep.com.br/ws/01001000/json/"
+	var resViaCepApi model.ViaCepApi
+	expectedResViaCepApi := &model.ViaCepApi{
+		Cep:         "01001-000",
+		Logradouro:  "Praça da Sé",
+		Complemento: "lado ímpar",
+		Unidade:     "",
+		Bairro:      "Sé",
+		Localidade:  "São Paulo",
+		Uf:          "SP",
+		Estado:      "São Paulo",
+		Regiao:      "Sudeste",
+		Ibge:        "3550308",
+		Gia:         "1004",
+		Ddd:         "11",
+		Siafi:       "7107",
+	}
+	actualResViaCepApi, errResViaCepApi := service.BuscaDados(urlViaCep)
+	errJson := json.Unmarshal(actualResViaCepApi, &resViaCepApi)
+	assert.Nil(t, errResViaCepApi)
+	assert.NotNil(t, actualResViaCepApi)
+	assert.Nil(t, errJson)
+	assert.NotNil(t, resViaCepApi)
+	assert.Equal(t, expectedResViaCepApi, &resViaCepApi)
+
+	urlCepBrasilApi := "https://brasilapi.com.br/api/cep/v1/01001000"
+	var resCepBrasilApi model.CepBrasilApi
+	expectedResCepBrasilApi := &model.CepBrasilApi{
+		Cep:          "01001000",
+		State:        "SP",
+		City:         "São Paulo",
+		Neighborhood: "Sé",
+		Street:       "Praça da Sé",
+	}
+	actualResCepBrasilApi, errResCepBrasilApi := service.BuscaDados(urlCepBrasilApi)
+	errJson = json.Unmarshal(actualResCepBrasilApi, &resCepBrasilApi)
+	assert.Nil(t, errResCepBrasilApi)
+	assert.NotNil(t, actualResCepBrasilApi)
+	assert.Nil(t, errJson)
+	assert.NotNil(t, resCepBrasilApi)
+	assert.Equal(t, expectedResCepBrasilApi, &resCepBrasilApi)
+
 }
