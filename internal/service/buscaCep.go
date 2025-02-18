@@ -11,12 +11,12 @@ import (
 )
 
 func BuscaCep(servico int, cep string) (*model.ViaCepApi, *model.CepBrasilApi, error) {
-	url, err := UrlServico(servico, cep)
+	url, err := urlServico(servico, cep)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	data, err := BuscaDados(url)
+	data, err := buscaDados(url)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -40,7 +40,7 @@ func BuscaCep(servico int, cep string) (*model.ViaCepApi, *model.CepBrasilApi, e
 	return nil, nil, nil
 }
 
-func UrlServico(servico int, cep string) (string, error) {
+func urlServico(servico int, cep string) (string, error) {
 	var url string
 
 	switch servico {
@@ -61,7 +61,7 @@ func UrlServico(servico int, cep string) (string, error) {
 	return finalUrl, nil
 }
 
-func BuscaDados(url string) ([]byte, error) {
+func buscaDados(url string) ([]byte, error) {
 	res, err := http.Get(url)
 	if err != nil {
 		return nil, err
