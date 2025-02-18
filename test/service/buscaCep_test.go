@@ -30,7 +30,7 @@ func TestBuscaCep(t *testing.T) {
 	cep := "01001000"
 
 	servico := model.ViaCep
-	expectedResViaCepApi := model.ViaCepApi{
+	expectedResViaCepApi := &model.ViaCepApi{
 		Cep:         "01001-000",
 		Logradouro:  "Praça da Sé",
 		Complemento: "lado ímpar",
