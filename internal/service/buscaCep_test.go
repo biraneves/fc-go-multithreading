@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/biraneves/fc-go-multithreading/internal/model"
-	"github.com/biraneves/fc-go-multithreading/internal/service"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,14 +13,14 @@ func TestUrlServico(t *testing.T) {
 
 	servico := model.CepBrasil
 	expectedUrlCepBrasil := "https://brasilapi.com.br/api/cep/v1/01001000"
-	actualUrlCepBrasil, err := service.UrlServico(servico, cep)
+	actualUrlCepBrasil, err := urlServico(servico, cep)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, actualUrlCepBrasil)
 	assert.Equal(t, expectedUrlCepBrasil, actualUrlCepBrasil)
 
 	servico = model.ViaCep
 	expectedUrlViaCep := "http://viacep.com.br/ws/01001000/json/"
-	actualUrlViaCep, err := service.UrlServico(servico, cep)
+	actualUrlViaCep, err := urlServico(servico, cep)
 	assert.Nil(t, err)
 	assert.NotEmpty(t, actualUrlViaCep)
 	assert.Equal(t, expectedUrlViaCep, actualUrlViaCep)
@@ -47,7 +46,7 @@ func TestBuscaCep(t *testing.T) {
 		Siafi:       "7107",
 	}
 
-	actualResViaCepApi, actualResBrasilApi, actualError := service.BuscaCep(servico, cep)
+	actualResViaCepApi, actualResBrasilApi, actualError := BuscaCep(servico, cep)
 	assert.Nil(t, actualError)
 	assert.Nil(t, actualResBrasilApi)
 	assert.NotNil(t, actualResViaCepApi)
@@ -62,7 +61,7 @@ func TestBuscaCep(t *testing.T) {
 		Street:       "Praça da Sé",
 	}
 
-	actualResViaCepApi, actualResBrasilApi, actualError = service.BuscaCep(servico, cep)
+	actualResViaCepApi, actualResBrasilApi, actualError = BuscaCep(servico, cep)
 	assert.Nil(t, actualError)
 	assert.Nil(t, actualResViaCepApi)
 	assert.NotNil(t, actualResBrasilApi)
@@ -87,7 +86,7 @@ func TestBuscaDados(t *testing.T) {
 		Ddd:         "11",
 		Siafi:       "7107",
 	}
-	actualResViaCepApi, errResViaCepApi := service.BuscaDados(urlViaCep)
+	actualResViaCepApi, errResViaCepApi := buscaDados(urlViaCep)
 	errJson := json.Unmarshal(actualResViaCepApi, &resViaCepApi)
 	assert.Nil(t, errResViaCepApi)
 	assert.NotNil(t, actualResViaCepApi)
@@ -104,7 +103,7 @@ func TestBuscaDados(t *testing.T) {
 		Neighborhood: "Sé",
 		Street:       "Praça da Sé",
 	}
-	actualResCepBrasilApi, errResCepBrasilApi := service.BuscaDados(urlCepBrasilApi)
+	actualResCepBrasilApi, errResCepBrasilApi := buscaDados(urlCepBrasilApi)
 	errJson = json.Unmarshal(actualResCepBrasilApi, &resCepBrasilApi)
 	assert.Nil(t, errResCepBrasilApi)
 	assert.NotNil(t, actualResCepBrasilApi)
